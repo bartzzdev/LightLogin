@@ -1,0 +1,23 @@
+# Configuration
+# for LightLogin
+# author: bartzzdev
+# 2016, Dec
+# Support!
+
+# Section for premium accounts settings
+premium:
+  # Set true if you want that players with premium accounts will be logged automatically (true/false)
+  autoLogin: true
+
+# Section for data storage
+storage:
+  # Set true if you want mysql data storage
+  mysql: true
+    # Skip if you have chose flat data storage
+    host: "localhost"
+    port: 3306:
+    user: "root"
+    password: ""
+    database: "lightlogin_database"
+  # Set true if you want flat data storage (yaml/json)
+  flat: false
