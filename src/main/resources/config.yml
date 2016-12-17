@@ -7,7 +7,7 @@
 # Section for premium accounts settings
 premium:
   # Set true if you want that players with premium accounts will be logged automatically (true/false)
-  autoLogin: true
+  autologin: true
 
 # Section for data storage
 storage:

@@ -6,6 +6,8 @@ public interface ObjectHolder<T> {
 
     UUID getUuid();
 
+    T saveFirst();
+
     T save();
 
     T load();

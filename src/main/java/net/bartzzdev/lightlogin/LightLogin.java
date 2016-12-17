@@ -4,6 +4,9 @@ import net.bartzzdev.lightlogin.api.LightLoginAPI;
 import net.bartzzdev.lightlogin.api.data.ObjectInitializer;
 import net.bartzzdev.lightlogin.api.players.LightPlayerManager;
 import net.bartzzdev.lightlogin.api.storage.database.Database;
+import net.bartzzdev.lightlogin.api.yaml.LightConfiguration;
+import net.bartzzdev.lightlogin.enums.Configuration;
+import net.bartzzdev.lightlogin.enums.Storage;
 import net.bartzzdev.lightlogin.impl.players.LightPlayerManagerImpl;
 import net.bartzzdev.lightlogin.impl.storage.database.DatabaseImpl;
 import net.bartzzdev.lightlogin.tasks.PostCallable;
@@ -24,6 +27,7 @@ public class LightLogin extends JavaPlugin implements LightLoginAPI {
     private Future<String> result;
     private Database database;
     private PostCallable post;
+    private LightConfiguration configuration;
 
     public LightLogin() {
         lightLogin = this;
@@ -58,6 +62,9 @@ public class LightLogin extends JavaPlugin implements LightLoginAPI {
         this.result = this.executorService.submit(this.post);
 
         this.database = new DatabaseImpl("", "", "", "", 1);
+
+        this.configuration = new LightConfiguration();
+        this.configuration.load();
     }
 
     @Override
@@ -79,6 +86,18 @@ public class LightLogin extends JavaPlugin implements LightLoginAPI {
     @Override
     public LightPlayerManager getPlayerManager() {
         return (LightPlayerManager) this.managers[0];
+    }
+
+    @Override
+    public Storage getStorageType() {
+        if (Configuration.STORAGE$MYSQL.getBoolean()) {
+            return Storage.MYSQL;
+        } else return Storage.FLAT;
+    }
+
+    @Override
+    public LightConfiguration getConfiguration() {
+        return this.configuration;
     }
 
     public PostCallable getPostRequest() {
