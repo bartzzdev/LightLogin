@@ -4,6 +4,7 @@ import net.bartzzdev.lightlogin.api.storage.database.Database;
 import net.bartzzdev.lightlogin.api.storage.database.query.Query;
 import net.bartzzdev.lightlogin.api.thread.Executor;
 import net.bartzzdev.lightlogin.api.thread.ExecutorInitializer;
+import net.bartzzdev.lightlogin.enums.Configuration;
 import net.bartzzdev.lightlogin.impl.storage.database.query.QueryImpl;
 import net.bartzzdev.lightlogin.tasks.ConnectionCallable;
 

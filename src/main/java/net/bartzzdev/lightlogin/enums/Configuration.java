@@ -5,15 +5,15 @@ import net.bartzzdev.lightlogin.api.yaml.LightConfiguration;
 
 public enum Configuration {
 
-    PREMIUM$AUTOLOGIN,
+    PREMIUM_AUTOLOGIN,
 
-    STORAGE$MYSQL,
-    STORAGE$MYSQL$HOST,
-    STORAGE$MYSQL$PORT,
-    STORAGE$MYSQL$USER,
-    STORAGE$MYSQL$PASSWORD,
-    STORAGE$MYSQL$DATABASE,
-    STORAGE$FLAT;
+    STORAGE_MYSQL,
+    STORAGE_MYSQL_HOST,
+    STORAGE_MYSQL_PORT,
+    STORAGE_MYSQL_USER,
+    STORAGE_MYSQL_PASSWORD,
+    STORAGE_MYSQL_DATABASE,
+    STORAGE_FLAT;
 
     private LightConfiguration configuration = LightLogin.getInstance().getConfiguration();
 

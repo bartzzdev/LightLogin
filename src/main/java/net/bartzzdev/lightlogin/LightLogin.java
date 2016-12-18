@@ -61,10 +61,15 @@ public class LightLogin extends JavaPlugin implements LightLoginAPI {
         this.post = new PostCallable("https://api.mojang.com/profiles/minecraft").register();
         this.result = this.executorService.submit(this.post);
 
-        this.database = new DatabaseImpl("", "", "", "", 1);
-
         this.configuration = new LightConfiguration();
         this.configuration.load();
+
+        this.database = new DatabaseImpl(
+                Configuration.STORAGE_MYSQL_HOST.getString(),
+                Configuration.STORAGE_MYSQL_USER.getString(),
+                Configuration.STORAGE_MYSQL_PASSWORD.getString(),
+                Configuration.STORAGE_MYSQL_DATABASE.getString(),
+                Configuration.STORAGE_MYSQL_PORT.getInteger());
     }
 
     @Override
@@ -90,7 +95,7 @@ public class LightLogin extends JavaPlugin implements LightLoginAPI {
 
     @Override
     public Storage getStorageType() {
-        if (Configuration.STORAGE$MYSQL.getBoolean()) {
+        if (Configuration.STORAGE_MYSQL.getBoolean()) {
             return Storage.MYSQL;
         } else return Storage.FLAT;
     }
