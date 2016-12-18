@@ -5,6 +5,7 @@ import net.bartzzdev.lightlogin.api.data.ObjectInitializer;
 import net.bartzzdev.lightlogin.api.players.LightPlayerManager;
 import net.bartzzdev.lightlogin.api.storage.database.Database;
 import net.bartzzdev.lightlogin.api.yaml.LightConfiguration;
+import net.bartzzdev.lightlogin.api.yaml.LightMessages;
 import net.bartzzdev.lightlogin.enums.Configuration;
 import net.bartzzdev.lightlogin.enums.Storage;
 import net.bartzzdev.lightlogin.impl.players.LightPlayerManagerImpl;
@@ -13,6 +14,7 @@ import net.bartzzdev.lightlogin.tasks.PostCallable;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.concurrent.ExecutorService;
@@ -28,6 +30,7 @@ public class LightLogin extends JavaPlugin implements LightLoginAPI {
     private Database database;
     private PostCallable post;
     private LightConfiguration configuration;
+    private LightMessages messages;
 
     public LightLogin() {
         lightLogin = this;
@@ -52,24 +55,38 @@ public class LightLogin extends JavaPlugin implements LightLoginAPI {
 
     @Override
     public void buildCache() {
+        long milis = System.currentTimeMillis();
+        ConsoleCommandSender sender = Bukkit.getConsoleSender();
+        this.sendPrefixedMessage(sender, "&4Building cache...");
+        this.sendPrefixedMessage(sender, "&4Initializing &3managers&4...");
         this.managers = new ObjectInitializer[5];
         this.executorService = Executors.newCachedThreadPool();
 
         this.managers[0] = new LightPlayerManagerImpl();
         this.managers[0].register();
 
+        this.sendPrefixedMessage(sender, "&4Initializing &3executor service&4...");
         this.post = new PostCallable("https://api.mojang.com/profiles/minecraft").register();
         this.result = this.executorService.submit(this.post);
 
+        this.sendPrefixedMessage(sender, "&4Loading &3configuration &4system...");
         this.configuration = new LightConfiguration();
         this.configuration.load();
 
+        this.sendPrefixedMessage(sender, "&4Loading &3messages &4system...");
+        this.messages = new LightMessages();
+        this.messages.load();
+
+        this.sendPrefixedMessage(sender, "&4Configuring &3database&4...");
         this.database = new DatabaseImpl(
                 Configuration.STORAGE_MYSQL_HOST.getString(),
                 Configuration.STORAGE_MYSQL_USER.getString(),
                 Configuration.STORAGE_MYSQL_PASSWORD.getString(),
                 Configuration.STORAGE_MYSQL_DATABASE.getString(),
                 Configuration.STORAGE_MYSQL_PORT.getInteger());
+
+        long calc = System.currentTimeMillis() - milis;
+        this.sendPrefixedMessage(sender, "&3Success! Built cache in &7" + calc + "ms&3!");
     }
 
     @Override
@@ -103,6 +120,11 @@ public class LightLogin extends JavaPlugin implements LightLoginAPI {
     @Override
     public LightConfiguration getConfiguration() {
         return this.configuration;
+    }
+
+    @Override
+    public LightMessages getMessages() {
+        return this.messages;
     }
 
     public PostCallable getPostRequest() {

@@ -2,6 +2,7 @@ package net.bartzzdev.lightlogin.api.yaml;
 
 import net.bartzzdev.lightlogin.LightLogin;
 import net.bartzzdev.lightlogin.enums.Configuration;
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashMap;
@@ -14,8 +15,8 @@ public class LightConfiguration {
     private Map<Configuration, Object> fieldsMap = new HashMap<>();
 
     public void load() {
-        for (String string : file.getKeys(false)) {
-            this.fieldsMap.put(Configuration.valueOf(string.replace('-', '$')), file.get(string));
+        for (String key : file.getKeys(false)) {
+            this.fieldsMap.put(Configuration.valueOf(StringUtils.replace(key, ".", "_")), file.get(key));
         }
     }
 
@@ -29,9 +30,5 @@ public class LightConfiguration {
 
     public boolean contains(Configuration configuration) {
         return this.fieldsMap.containsKey(configuration);
-    }
-
-    public void put(Configuration configuration, Object value) {
-        this.fieldsMap.put(configuration, value);
     }
 }

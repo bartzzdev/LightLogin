@@ -3,6 +3,7 @@ package net.bartzzdev.lightlogin.api;
 import net.bartzzdev.lightlogin.api.players.LightPlayerManager;
 import net.bartzzdev.lightlogin.api.storage.database.Database;
 import net.bartzzdev.lightlogin.api.yaml.LightConfiguration;
+import net.bartzzdev.lightlogin.api.yaml.LightMessages;
 import net.bartzzdev.lightlogin.enums.Storage;
 import org.bukkit.command.CommandSender;
 
@@ -23,4 +24,6 @@ public interface LightLoginAPI {
     Storage getStorageType();
 
     LightConfiguration getConfiguration();
+
+    LightMessages getMessages();
 }

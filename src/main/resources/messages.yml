@@ -1,0 +1,11 @@
+# Messages
+# for LightLogin
+# author: bartzzdev
+# 2016, Dec
+# Support!
+
+# If you want new line in your message, put {$s}.
+# Ex: "No description. {$s}Oh, new line!"
+
+global:
+  invalidArgs: "Invalid count of args in that command."
