@@ -20,6 +20,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class LightLogin extends JavaPlugin implements LightLoginAPI {
 
@@ -31,6 +33,7 @@ public class LightLogin extends JavaPlugin implements LightLoginAPI {
     private PostCallable post;
     private LightConfiguration configuration;
     private LightMessages messages;
+    private Logger logger;
 
     public LightLogin() {
         lightLogin = this;
@@ -55,29 +58,29 @@ public class LightLogin extends JavaPlugin implements LightLoginAPI {
 
     @Override
     public void buildCache() {
+        this.initLogger();
         long milis = System.currentTimeMillis();
-        ConsoleCommandSender sender = Bukkit.getConsoleSender();
-        this.sendPrefixedMessage(sender, "&4Building cache...");
-        this.sendPrefixedMessage(sender, "&4Initializing &3managers&4...");
+        this.sendPrefixedLog(Level.INFO, "&4Building cache...");
+        this.sendPrefixedLog(Level.INFO, "&4Initializing &3managers&4...");
         this.managers = new ObjectInitializer[5];
         this.executorService = Executors.newCachedThreadPool();
 
         this.managers[0] = new LightPlayerManagerImpl();
         this.managers[0].register();
 
-        this.sendPrefixedMessage(sender, "&4Initializing &3executor service&4...");
+        this.sendPrefixedLog(Level.INFO, "&4Initializing &3executor service&4...");
         this.post = new PostCallable("https://api.mojang.com/profiles/minecraft").register();
         this.result = this.executorService.submit(this.post);
 
-        this.sendPrefixedMessage(sender, "&4Loading &3configuration &4system...");
+        this.sendPrefixedLog(Level.INFO, "&4Loading &3configuration &4system...");
         this.configuration = new LightConfiguration();
         this.configuration.load();
 
-        this.sendPrefixedMessage(sender, "&4Loading &3messages &4system...");
+        this.sendPrefixedLog(Level.INFO, "&4Loading &3messages &4system...");
         this.messages = new LightMessages();
         this.messages.load();
 
-        this.sendPrefixedMessage(sender, "&4Configuring &3database&4...");
+        this.sendPrefixedLog(Level.INFO, "&4Configuring &3database&4...");
         this.database = new DatabaseImpl(
                 Configuration.STORAGE_MYSQL_HOST.getString(),
                 Configuration.STORAGE_MYSQL_USER.getString(),
@@ -86,7 +89,7 @@ public class LightLogin extends JavaPlugin implements LightLoginAPI {
                 Configuration.STORAGE_MYSQL_PORT.getInteger());
 
         long calc = System.currentTimeMillis() - milis;
-        this.sendPrefixedMessage(sender, "&3Success! Built cache in &7" + calc + "ms&3!");
+        this.sendPrefixedLog(Level.INFO, "&3Success! Built cache in &7" + calc + "ms&3!");
     }
 
     @Override
@@ -102,7 +105,12 @@ public class LightLogin extends JavaPlugin implements LightLoginAPI {
     @Override
     public void sendPrefixedMessage(CommandSender commandSender, String message) {
         if (message.isEmpty()) return;
-        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7[&cLightLogin&7] " + message));
+        commandSender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&7[&3LightLogin&7] " + message));
+    }
+
+    @Override
+    public void sendPrefixedLog(Level level, String message) {
+        this.logger.log(level, "[LightLogin] " + message);
     }
 
     @Override
@@ -129,5 +137,12 @@ public class LightLogin extends JavaPlugin implements LightLoginAPI {
 
     public PostCallable getPostRequest() {
         return this.post;
+    }
+
+    private Logger initLogger() {
+        if (this.logger == null) {
+            this.logger = Bukkit.getLogger();
+        }
+        return this.logger;
     }
 }

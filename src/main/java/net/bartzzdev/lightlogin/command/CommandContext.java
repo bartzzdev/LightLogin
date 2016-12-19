@@ -1,12 +1,15 @@
 package net.bartzzdev.lightlogin.command;
 
+import net.bartzzdev.lightlogin.LightLogin;
 import net.bartzzdev.lightlogin.api.data.ObjectInitializer;
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Field;
 import java.util.Arrays;
+import java.util.logging.Level;
 
 public class CommandContext implements ObjectInitializer<CommandInfo> {
 
@@ -26,8 +29,7 @@ public class CommandContext implements ObjectInitializer<CommandInfo> {
         command.setPermission(this.permission);
         command.setDescription(this.description);
         command.setUsage(this.usage);
-        //TODO message from messages system
-        command.setPermissionMessage("");
+        command.setPermissionMessage(ChatColor.translateAlternateColorCodes('&', "&7[&3LightLogin&7] You don't have permission to &3perform &7this command!"));
     }
 
     private CommandMap getCommandMap() {
@@ -60,13 +62,13 @@ public class CommandContext implements ObjectInitializer<CommandInfo> {
                 public boolean execute(CommandSender commandSender, String s, String[] strings) {
                     args = strings;
                     if (!commandSender.hasPermission(permission)) {
-                        //TODO sending message from messages system
+                        commandSender.sendMessage(this.getPermissionMessage());
                         return false;
                     }
 
                     if (onlyPlayer) {
                         if (!(commandSender instanceof Player)) {
-                            //TODO sending message from messages system
+                            LightLogin.getInstance().sendPrefixedLog(Level.SEVERE, "Command ~" + this.getName() + " can be executed only by player.");
                             return false;
                         }
                     }

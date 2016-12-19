@@ -8,6 +8,7 @@ import net.bartzzdev.lightlogin.enums.Storage;
 import org.bukkit.command.CommandSender;
 
 import java.util.concurrent.Future;
+import java.util.logging.Level;
 
 public interface LightLoginAPI {
 
@@ -18,6 +19,8 @@ public interface LightLoginAPI {
     Database getLoginDatabase();
 
     void sendPrefixedMessage(CommandSender commandSender, String message);
+
+    void sendPrefixedLog(Level level, String message);
 
     LightPlayerManager getPlayerManager();
 
