@@ -4,8 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    <name>LightLogin</name>
     <groupId>net.bartzzdev</groupId>
-    <artifactId>LightLogin</artifactId>
+    <artifactId>lightlogin</artifactId>
     <version>0.0.7</version>
     <build>
         <plugins>
@@ -31,12 +32,14 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.10.2-R0.1-SNAPSHOT</version>
+            <version>1.11-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>1.4</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>
