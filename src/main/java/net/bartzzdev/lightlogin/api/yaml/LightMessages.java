@@ -24,7 +24,7 @@ public class LightMessages {
         for (String key : this.yaml.getKeys(false)) {
             String string = this.yaml.getString(key);
             if (string.contains("{$s}")) string = StringUtils.replace(string, "{$s}", "\n");
-            this.stringMap.put(Messages.valueOf(StringUtils.replace(key, ".", "_")), string);
+            this.stringMap.put(Messages.valueOf(StringUtils.replace(key, ".", "_").toLowerCase()), string);
         }
     }
 

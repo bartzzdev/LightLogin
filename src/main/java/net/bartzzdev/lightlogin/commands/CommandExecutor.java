@@ -1,4 +1,4 @@
-package net.bartzzdev.lightlogin.command;
+package net.bartzzdev.lightlogin.commands;
 
 import org.bukkit.command.CommandSender;
 

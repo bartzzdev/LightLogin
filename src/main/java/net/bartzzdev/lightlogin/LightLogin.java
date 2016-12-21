@@ -14,7 +14,6 @@ import net.bartzzdev.lightlogin.tasks.PostCallable;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.concurrent.ExecutorService;
@@ -60,27 +59,27 @@ public class LightLogin extends JavaPlugin implements LightLoginAPI {
     public void buildCache() {
         this.initLogger();
         long milis = System.currentTimeMillis();
-        this.sendPrefixedLog(Level.INFO, "&4Building cache...");
-        this.sendPrefixedLog(Level.INFO, "&4Initializing &3managers&4...");
+        this.sendPrefixedLog(Level.INFO, "Building cache...");
+        this.sendPrefixedLog(Level.INFO, "Initializing managers...");
         this.managers = new ObjectInitializer[5];
         this.executorService = Executors.newCachedThreadPool();
 
         this.managers[0] = new LightPlayerManagerImpl();
         this.managers[0].register();
 
-        this.sendPrefixedLog(Level.INFO, "&4Initializing &3executor service&4...");
+        this.sendPrefixedLog(Level.INFO, "Initializing executor service...");
         this.post = new PostCallable("https://api.mojang.com/profiles/minecraft").register();
         this.result = this.executorService.submit(this.post);
 
-        this.sendPrefixedLog(Level.INFO, "&4Loading &3configuration &4system...");
+        this.sendPrefixedLog(Level.INFO, "Loading configuration system...");
         this.configuration = new LightConfiguration();
         this.configuration.load();
 
-        this.sendPrefixedLog(Level.INFO, "&4Loading &3messages &4system...");
+        this.sendPrefixedLog(Level.INFO, "Loading messages system...");
         this.messages = new LightMessages();
         this.messages.load();
 
-        this.sendPrefixedLog(Level.INFO, "&4Configuring &3database&4...");
+        this.sendPrefixedLog(Level.INFO, "Configuring database...");
         this.database = new DatabaseImpl(
                 Configuration.STORAGE_MYSQL_HOST.getString(),
                 Configuration.STORAGE_MYSQL_USER.getString(),
@@ -89,7 +88,7 @@ public class LightLogin extends JavaPlugin implements LightLoginAPI {
                 Configuration.STORAGE_MYSQL_PORT.getInteger());
 
         long calc = System.currentTimeMillis() - milis;
-        this.sendPrefixedLog(Level.INFO, "&3Success! Built cache in &7" + calc + "ms&3!");
+        this.sendPrefixedLog(Level.INFO, "Success! Built cache in " + calc + "ms!");
     }
 
     @Override

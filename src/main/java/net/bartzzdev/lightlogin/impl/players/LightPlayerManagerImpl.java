@@ -9,11 +9,12 @@ import java.util.*;
 
 public class LightPlayerManagerImpl implements LightPlayerManager, ObjectInitializer<LightPlayerManager> {
 
-    private Set<LightPlayer> players = new HashSet<>();
-    private Map<UUID, String> premiumNames = new HashMap<>();
+    private Map<UUID, LightPlayer> players;
+    private Map<UUID, String> premiumNames;
+
 
     @Override
-    public Set<LightPlayer> getPlayers() {
+    public Map<UUID, LightPlayer> getPlayers() {
         return this.players;
     }
 
@@ -25,7 +26,7 @@ public class LightPlayerManagerImpl implements LightPlayerManager, ObjectInitial
     @Override
     public LightPlayer create(UUID uuid, String playerName) {
         LightPlayer lPlayer = new LightPlayerImpl(uuid, playerName);
-        this.players.add(lPlayer);
+        this.players.put(uuid, lPlayer);
         if (!IOUtils.getContent("https://sessionserver.mojang.com/session/minecraft/profile/" + uuid.toString().split("-")).isEmpty()) {
             this.premiumNames.put(uuid, playerName);
         }
@@ -34,6 +35,8 @@ public class LightPlayerManagerImpl implements LightPlayerManager, ObjectInitial
 
     @Override
     public LightPlayerManager register() {
+        this.players = new HashMap<>();
+        this.premiumNames = new HashMap<>();
         return this;
     }
 }

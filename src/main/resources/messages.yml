@@ -8,4 +8,5 @@
 # Ex: "No description. {$s}Oh, new line!"
 
 global:
-  invalidArgs: "Invalid count of args in that command."
+  invalidArgs: "&3Invalid count of args in that command."
+  noPermission: "&3You don't have permission to do that."

@@ -5,7 +5,8 @@ import net.bartzzdev.lightlogin.api.yaml.LightMessages;
 
 public enum Messages {
 
-    GLOBAL_INVALIDARGS;
+    GLOBAL_INVALIDARGS,
+    GLOBAL_NOPERMISSION;
 
     private LightMessages messages = LightLogin.getInstance().getMessages();
 
@@ -14,6 +15,6 @@ public enum Messages {
             return "";
         }
 
-        return this.messages.getStringMap().get(this);
+        return this.messages.getStringMap().get(this.toString().toLowerCase());
     }
 }

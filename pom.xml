@@ -6,7 +6,7 @@
 
     <groupId>net.bartzzdev</groupId>
     <artifactId>LightLogin</artifactId>
-    <version>0.0.0.6</version>
+    <version>0.0.7</version>
     <build>
         <plugins>
             <plugin>
@@ -33,6 +33,10 @@
             <artifactId>spigot-api</artifactId>
             <version>1.10.2-R0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>commons-io</groupId>
+            <artifactId>commons-io</artifactId>
+            <version>1.4</version>
+        </dependency>
     </dependencies>
-
 </project>
