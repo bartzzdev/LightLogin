@@ -1,5 +1,5 @@
 <hr />
-<img src="https://postimg.org/image/ad0fo0men/" />
+<img src="https://s27.postimg.org/51lj3b0c3/logo.png" />
 <hr />
 <p />
 <b> LightLogin </b> - an authorization system for spigot servers.
