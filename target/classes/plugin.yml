@@ -1,0 +1,4 @@
+name: LightLogin
+author: bartzz
+version: 0.0.8
+main: net.bartzz.lightlogin.LightLogin

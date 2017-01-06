@@ -1,0 +1,25 @@
+# Messages
+# for LightLogin
+# by bartzz
+# 2017 :)
+
+# <----- Global Variables -----> #
+# <%n> - new line
+
+# Global messages
+global:
+  # Message called when command is executable only by player
+  notPlayer: "That command can be executed only by player."
+  # Message called when player doesn't have permission to execute command
+  noPermission: "&cYou don't have permission to perform this command."
+  # Message called when params of the command are invalid
+  params: "&cInvalid params! Check usage of this command."
+
+# <----- Commands -----> #
+accountCommand:
+  # Variables: <%name>
+  playerNotFound: "&7Not found player with name &2<%name%>"
+  # Variables: <%player>, <%account>, <%playerId>
+  trigger: "&7Info about account of player &2<%player>&7:<%n>
+  &7playerId: &2<%playerId><%n>
+  &7account: &2<%account>"
