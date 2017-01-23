@@ -2,3 +2,21 @@
 # for LightLogin
 # by bartzz
 # 2017 :)
+
+# Plugins you want to be supported by LightLogin
+supports:
+  protocolLib: false
+  skript: false
+
+# Storage you prefer to use
+storage:
+  mysql: true
+  file: false
+
+# If you chose mysql storage type, complete fields about connection
+mysql:
+  host:
+  port:
+  user:
+  password:
+  database:

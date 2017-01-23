@@ -1,10 +1,10 @@
 package net.bartzz.lightlogin.api.players;
 
-import net.bartzz.lightlogin.api.files.enums.Messages;
+import net.bartzz.lightlogin.api.players.messaging.Messaging;
 
 import java.util.UUID;
 
-public interface LightPlayer
+public interface LightPlayer extends Messaging
 {
     UUID getPlayerId();
 
@@ -13,6 +13,4 @@ public interface LightPlayer
     Account getAccountType();
 
     void setAccountType(Account accountType);
-
-    void sendPrefixedMessage(Messages message);
 }

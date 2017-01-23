@@ -1,15 +1,14 @@
 package net.bartzz.lightlogin.impl.players;
 
-import net.bartzz.lightlogin.LightLogin;
 import net.bartzz.lightlogin.api.data.DataInitializer;
 import net.bartzz.lightlogin.api.files.enums.Messages;
 import net.bartzz.lightlogin.api.players.Account;
 import net.bartzz.lightlogin.api.players.LightPlayer;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
+import java.util.function.Predicate;
 
 public class LightPlayerImpl implements LightPlayer, DataInitializer<LightPlayer>
 {
@@ -30,6 +29,72 @@ public class LightPlayerImpl implements LightPlayer, DataInitializer<LightPlayer
     {
         this.bukkitPlayer = Bukkit.getPlayer(this.playerId);
         return this;
+    }
+
+    @Override
+    public void prefixedMessage(Messages message)
+    {
+        if (this.bukkitPlayer == null)
+        {
+            return;
+        }
+
+        this.bukkitPlayer.sendMessage(new StringBuilder().append(this.PREFIX).append(' ').append(message.getRawMessage()).toString());
+    }
+
+    @Override
+    public boolean prefixedMessageIf(Messages message, Predicate<LightPlayer> predicate)
+    {
+        if (predicate.test(this))
+        {
+            this.prefixedMessage(message);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void coloredMessage(Messages message)
+    {
+        if (this.bukkitPlayer == null)
+        {
+            return;
+        }
+
+        this.bukkitPlayer.sendMessage(message.getMessage());
+    }
+
+    @Override
+    public boolean coloredMessageIf(Messages message, Predicate<LightPlayer> predicate)
+    {
+        if (predicate.test(this))
+        {
+            this.coloredMessage(message);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void coloredPrefixedMessage(Messages message)
+    {
+        if (this.bukkitPlayer == null)
+        {
+            return;
+        }
+
+        this.bukkitPlayer.sendMessage(new StringBuilder().append(this.PREFIX).append(' ').append(message.getMessage()).toString());
+    }
+
+    @Override
+    public boolean coloredPrefixedMessageIf(Messages message, Predicate<LightPlayer> predicate)
+    {
+        if (predicate.test(this))
+        {
+            this.coloredPrefixedMessage(message);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -54,16 +119,5 @@ public class LightPlayerImpl implements LightPlayer, DataInitializer<LightPlayer
     public void setAccountType(Account accountType)
     {
         this.accountType = accountType;
-    }
-
-    @Override
-    public void sendPrefixedMessage(Messages message)
-    {
-        if (this.bukkitPlayer == null)
-        {
-            return;
-        }
-
-        this.bukkitPlayer.sendMessage(ChatColor.GRAY + "[" + ChatColor.DARK_AQUA + "LightLogin" + ChatColor.GRAY + "] " + LightLogin.getInstance().getMessages().get(message));
     }
 }

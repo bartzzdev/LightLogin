@@ -3,13 +3,12 @@ package net.bartzz.lightlogin.impl.players;
 import net.bartzz.lightlogin.api.players.LightPlayer;
 import net.bartzz.lightlogin.api.players.LightPlayerManager;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class LightPlayerManagerImpl implements LightPlayerManager
 {
     private final Map<UUID, LightPlayer> playersMap = new HashMap<>();
+    private final List<String> namesAwaiting = new ArrayList<>(100);
 
     @Override
     public Map<UUID, LightPlayer> getPlayersMap()
@@ -42,5 +41,11 @@ public class LightPlayerManagerImpl implements LightPlayerManager
         }
 
         return this.get(playerId);
+    }
+
+    @Override
+    public List<String> getNamesAwaiting()
+    {
+        return this.namesAwaiting;
     }
 }

@@ -29,6 +29,7 @@ public class MysqlStorage implements Storage
                 String playerName = resultSet.getString("playerName");
                 Account account = Account.valueOf(resultSet.getString("account"));
                 this.lightLogin.getPlayerManager().create(playerId, playerName).setAccountType(account);
+                preparedStatement.close();
             }
         } catch (SQLException e)
         {
@@ -48,10 +49,17 @@ public class MysqlStorage implements Storage
                 preparedStatement.setString(1, lightPlayer.getAccountType().name());
                 preparedStatement.setString(3, lightPlayer.getPlayerId().toString());
                 new DatabaseQueryImpl(preparedStatement).executeUpdate();
+                preparedStatement.close();
             } catch (SQLException e)
             {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public Storage getStorage()
+    {
+        return new MysqlStorage();
     }
 }

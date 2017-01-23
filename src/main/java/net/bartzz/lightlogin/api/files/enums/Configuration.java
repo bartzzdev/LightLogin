@@ -5,7 +5,17 @@ import net.bartzz.lightlogin.api.files.LightConfiguration;
 
 public enum Configuration
 {
-    ABC;
+    SUPPORTS_PROTOCOLLIB,
+    SUPPORTS_SKRIPT,
+
+    STORAGE_MYSQL,
+    STORAGE_FILE,
+
+    MYSQL_HOST,
+    MYSQL_PORT,
+    MYSQL_USER,
+    MYSQL_PASSWORD,
+    MYSQL_DATABASE;
 
     private LightLogin lightLogin = LightLogin.getInstance();
     private LightConfiguration config = this.lightLogin.getConfiguration();

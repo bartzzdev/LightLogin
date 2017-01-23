@@ -16,30 +16,42 @@ public enum Messages
 
     private final LightLogin lightLogin = LightLogin.getInstance();
     private final LightMessages messages = this.lightLogin.getMessages();
+    private final StringBuilder builder = new StringBuilder();
+
+    Messages()
+    {
+        builder.append(this.messages.get(this));
+    }
 
     public String getMessage()
     {
-        return this.messages.get(this);
+        return this.builder.toString();
     }
 
-    public String getMessageReplaced(String[] toReplace, String[] newText)
+    public Messages replace(String[] toReplace, String[] newText)
     {
-        if (toReplace.length != newText.length)
+        this.builder.delete(0, this.builder.length());
+        boolean success = false;
+        if (toReplace.length == newText.length)
         {
-            return "";
+            success = true;
         }
 
         String message = this.messages.get(this);
-        for (int i = 0; i < toReplace.length; i++)
+        if (success)
         {
-            message = StringUtils.replace(message, toReplace[i], newText[i]);
+            for (int i = 0; i < toReplace.length; i++)
+            {
+                message = StringUtils.replace(message, toReplace[i], newText[i]);
+            }
         }
 
-        return message;
+        this.builder.append(message);
+        return this;
     }
 
     public String getRawMessage()
     {
-        return ChatColor.stripColor(this.messages.get(this));
+        return ChatColor.stripColor(this.builder.toString());
     }
 }

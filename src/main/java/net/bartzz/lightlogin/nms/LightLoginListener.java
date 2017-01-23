@@ -6,6 +6,13 @@ import com.mojang.authlib.exceptions.AuthenticationUnavailableException;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.util.concurrent.GenericFutureListener;
+import net.bartzz.lightlogin.LightLogin;
+import net.bartzz.lightlogin.api.players.LightPlayer;
+import net.bartzz.lightlogin.api.storage.database.PreparedStatements;
+import net.bartzz.lightlogin.api.threads.Executor;
+import net.bartzz.lightlogin.api.threads.ExecutorInitializer;
+import net.bartzz.lightlogin.callables.PostCallable;
+import net.bartzz.lightlogin.events.AuthorizationPlayerEvent;
 import net.minecraft.server.v1_11_R1.*;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
@@ -22,6 +29,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.security.PrivateKey;
+import java.sql.PreparedStatement;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.UUID;
@@ -163,7 +171,7 @@ public class LightLoginListener extends LoginListener
 
     public void a(PacketLoginInEncryptionBegin packetlogininencryptionbegin)
     {
-        System.out.println("Authorizing...");
+        this.server.setOnlineMode(true);
         Validate.validState(this.g == EnumProtocolState.KEY, "Unexpected key packet", new Object[0]);
         PrivateKey privatekey = this.server.O().getPrivate();
         if (!Arrays.equals(this.e, packetlogininencryptionbegin.b(privatekey)))
@@ -197,6 +205,26 @@ public class LightLoginListener extends LoginListener
                             InetAddress address = ((InetSocketAddress) networkManager.getSocketAddress()).getAddress();
                             UUID uniqueId = i.getId();
                             final CraftServer server = LightLoginListener.this.server.server;
+                            LightLogin lightLogin = LightLogin.getInstance();
+                            lightLogin.getPlayerManager().getNamesAwaiting().add(playerName);
+                            LightPlayer lightPlayer = lightLogin.getPlayerManager().get(uniqueId);
+                            if (lightPlayer == null)
+                            {
+                                lightPlayer = lightLogin.getPlayerManager().create(uniqueId, playerName);
+                                PreparedStatement preparedStatement = PreparedStatements.INSERT.build();
+                                preparedStatement.setString(0, lightPlayer.getPlayerId().toString());
+                                preparedStatement.setString(1, lightPlayer.getPlayerName());
+                                preparedStatement.setString(2, lightPlayer.getAccountType().name());
+                            }
+
+                            AuthorizationPlayerEvent authEvent = new AuthorizationPlayerEvent(lightPlayer);
+                            String response;
+                            server.getPluginManager().callEvent(authEvent);
+                            {
+                                Executor<String> executor = new ExecutorInitializer<String>().newExecutor(new PostCallable());
+                                response = executor.execute();
+                            }
+
                             AsyncPlayerPreLoginEvent asyncEvent = new AsyncPlayerPreLoginEvent(playerName, address, uniqueId);
                             server.getPluginManager().callEvent(asyncEvent);
                             if (PlayerPreLoginEvent.getHandlerList().getRegisteredListeners().length != 0)

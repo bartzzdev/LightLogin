@@ -1,13 +1,13 @@
 package net.bartzz.lightlogin.impl.storage.database;
 
-import net.bartzz.lightlogin.api.data.DataInitializer;
 import net.bartzz.lightlogin.api.storage.database.Database;
+import net.bartzz.lightlogin.api.threads.Executor;
+import net.bartzz.lightlogin.api.threads.ExecutorInitializer;
+import net.bartzz.lightlogin.callables.ConnectionCallable;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
-public class DatabaseImpl implements Database, DataInitializer<Connection>
+public class DatabaseImpl implements Database
 {
     private Connection connection;
     private String host;
@@ -26,46 +26,19 @@ public class DatabaseImpl implements Database, DataInitializer<Connection>
     }
 
     @Override
-    public Connection register()
-    {
-        try
-        {
-            return this.connection = DriverManager.getConnection("jdbc:mysql://" + this.host + ":" + this.port + "/" + this.database, this.user, this.password);
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    @Override
     public void connect()
     {
-        try
-        {
-            if (this.connection != null && this.connection.isClosed())
-            {
-                this.register();
-            }
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+        ConnectionCallable callable = new ConnectionCallable(this.port, this.host, this.user, this.password, this.database);
+        Executor<Boolean> executor = new ExecutorInitializer<Boolean>().newExecutor(callable);
+        executor.execute();
     }
 
     @Override
     public void disconnect()
     {
-        try
-        {
-            if (this.connection != null && !this.connection.isClosed())
-            {
-                this.connection.close();
-            }
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+        ConnectionCallable callable = new ConnectionCallable(this.connection, true);
+        Executor<Boolean> executor = new ExecutorInitializer<Boolean>().newExecutor(callable);
+        executor.execute();
     }
 
     @Override

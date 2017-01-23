@@ -10,16 +10,15 @@ import java.util.logging.Level;
 
 public class FixCommand implements ICommand
 {
-    @CommandInfo(
-            name = "fix",
-            permission = "lightlogin.command.fix",
-            usage = "/fix",
-            description = "Fixes the cache.")
+    @CommandInfo(name = "fix",
+    permission = "lightlogin.command.fix",
+    usage = "/fix",
+    description = "Fixes the cache",
+    aliases = { "rebuild", "newcache" })
     public void call(CommandSender sender, CommandContext context)
     {
-        if (context.getParamsLength() > 0)
+        if (context.getPlayer().prefixedMessageIf(Messages.GLOBAL_PARAMS, p -> context.getParamsLength() > 0))
         {
-            context.getPlayer().sendPrefixedMessage(Messages.GLOBAL_PARAMS);
             return;
         }
 
