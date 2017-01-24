@@ -16,17 +16,18 @@ public class AccountCommand implements ICommand
     aliases = { "acc" })
     public void call(CommandSender sender, CommandContext context)
     {
-        if (context.getPlayer().coloredPrefixedMessageIf(Messages.GLOBAL_PARAMS, p -> context.getParamsLength() != 1))
+        if (context.getParamsLength() != 1)
         {
+            context.getPlayer().coloredPrefixedMessage(Messages.GLOBAL_PARAMS);
             return;
         }
 
         String playerName = context.getParam(0);
         LightPlayer paramPlayer = this.getPlugin().getPlayerManager().get(playerName);
 
-        if (context.getPlayer().coloredMessageIf(Messages.ACCOUNTCOMMAND_PLAYERNOTFOUND.replace(new String[] {"<%name>"}, new String[] {playerName}),
-                p -> paramPlayer == null))
+        if (paramPlayer == null)
         {
+            context.getPlayer().coloredMessage(Messages.ACCOUNTCOMMAND_PLAYERNOTFOUND.replace(new String[]{"<%name>"}, new String[]{playerName}));
             return;
         }
 

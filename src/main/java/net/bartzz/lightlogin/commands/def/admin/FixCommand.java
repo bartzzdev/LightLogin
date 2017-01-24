@@ -17,8 +17,9 @@ public class FixCommand implements ICommand
     aliases = { "rebuild", "newcache" })
     public void call(CommandSender sender, CommandContext context)
     {
-        if (context.getPlayer().prefixedMessageIf(Messages.GLOBAL_PARAMS, p -> context.getParamsLength() > 0))
+        if (context.getParamsLength() != 0)
         {
+            sender.sendMessage(Messages.GLOBAL_PARAMS.getMessage());
             return;
         }
 
