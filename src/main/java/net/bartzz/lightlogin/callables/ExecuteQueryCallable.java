@@ -2,7 +2,6 @@ package net.bartzz.lightlogin.callables;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.concurrent.Callable;
 
 public class ExecuteQueryCallable implements Callable<ResultSet>
@@ -18,16 +17,5 @@ public class ExecuteQueryCallable implements Callable<ResultSet>
     public ResultSet call() throws Exception
     {
         return this.preparedStatement.executeQuery();
-    }
-
-    public void close()
-    {
-        try
-        {
-            this.preparedStatement.close();
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
     }
 }

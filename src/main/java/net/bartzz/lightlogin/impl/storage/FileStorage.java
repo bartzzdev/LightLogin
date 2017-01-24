@@ -50,6 +50,6 @@ public class FileStorage implements Storage
     @Override
     public Storage getStorage()
     {
-        return new FileStorage();
+        return this;
     }
 }

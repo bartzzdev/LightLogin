@@ -60,6 +60,6 @@ public class MysqlStorage implements Storage
     @Override
     public Storage getStorage()
     {
-        return new MysqlStorage();
+        return this;
     }
 }
