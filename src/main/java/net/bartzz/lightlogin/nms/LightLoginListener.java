@@ -193,7 +193,7 @@ public class LightLoginListener extends LoginListener
                     try
                     {
                         String exception = (new BigInteger(MinecraftEncryption.a("", server.O().getPublic(), loginKey))).toString(16);
-                        i = server.az().hasJoinedServer(new GameProfile((UUID) null, gameprofile.getName()), exception, this.a());
+                        i = server.az().hasJoinedServer(new GameProfile(null, gameprofile.getName()), exception, this.a());
                         if (i != null)
                         {
                             if (!networkManager.isConnected())
